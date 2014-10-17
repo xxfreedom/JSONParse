@@ -38,14 +38,23 @@
 }
 -(void)testJson
 {
-    NSDictionary *dic = @{@"1":@"2",@"2":@"3"};
-    NSArray *array=@[@"1",@"2",@"3"];
+    NSDictionary *dic = @{@"1":@"2",@"2":@"3",@"number":@(1),@"null":[NSNull null]};
+    NSArray *array=@[@"1",@"2",@"3",@(1),[NSNull null]];
    id json= [JSONParse ObjectCovertToJson:dic];
     NSLog(@"json:%@",json);
     
+    id object=[JSONParse JsonCovertToObject:json];
+    NSLog(@"object:%@",object);
+    
     NSString *dicJsonStr=[NSDictionary dictionaryCoverToString:dic];
-    NSLog(@"jsonStr:%@",dicJsonStr);
+    NSLog(@"DictionaryStr:%@",dicJsonStr);
     NSString *arrayJsonStr=[NSArray arrayCoverToString:array];
     NSLog(@"arrayStr:%@",arrayJsonStr);
+    
+    NSArray *comArray=@[@"1",@"2",@"3", @{@"1":@"2",@"2":@"3"}];
+    NSDictionary *comDictionary=@{@"1":@"2",@"2":@"3",@"dic":@[@"1",@"2",@"3"]};
+    
+    NSLog(@"ComAarrayJson:%@",[NSArray arrayCoverToString:comArray]);
+    NSLog(@"ComDictionaryJson:%@",[NSDictionary dictionaryCoverToString:comDictionary]);
 }
 @end

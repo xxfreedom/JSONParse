@@ -22,6 +22,17 @@
     }
     return json;
 }
++(id)JsonCovertToObject:(id)json;
+{
+    id object;
+    NSError *error;
+    object=[NSJSONSerialization JSONObjectWithData:json options:NSJSONReadingMutableContainers|NSJSONReadingMutableContainers error:&error];
+    if(error)
+    {
+        NSLog(@"%s error:%@",__func__,[error description]);
+    }
+    return object;
+}
 @end
 @implementation NSDictionary (JSONString)
 +(NSString *)dictionaryCoverToString:(NSDictionary *)dictionary
