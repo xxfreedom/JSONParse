@@ -9,12 +9,15 @@
 #import <Foundation/Foundation.h>
 
 @interface JSONParse : NSObject
-+(id)ObjectCovertToJson:(id)object;
-+(id)JsonCovertToObject:(id)json;
++(id)ObjectConvertToJson:(id)object;
++(id)JsonConvertToObject:(id)json;
 @end
 @interface NSDictionary (JSONString)
-+(NSString *)dictionaryCoverToString:(NSDictionary *)dictionary;
++(NSString *)dictionaryConvertoString:(NSDictionary *)dictionary;
 @end
 @interface NSArray (JSONString)
-+(NSString *)arrayCoverToString:(NSArray *)array;
++(NSString *)arrayConvertoString:(NSArray *)array;
+@end
+@interface NSObject (ClassJsonString)
++(NSString *)objectPropertyConvertoString:(id)object;
 @end

@@ -15,6 +15,7 @@
 		1154269219EFB38E0029A732 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1154269019EFB38E0029A732 /* LaunchScreen.xib */; };
 		1154269E19EFB38F0029A732 /* JSONParseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1154269D19EFB38F0029A732 /* JSONParseTests.m */; };
 		115426A919EFB4040029A732 /* JSONParse.m in Sources */ = {isa = PBXBuildFile; fileRef = 115426A819EFB4040029A732 /* JSONParse.m */; };
+		11B6F6AE19F0E523001154EB /* ModelClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B6F6AD19F0E523001154EB /* ModelClass.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +44,8 @@
 		1154269D19EFB38F0029A732 /* JSONParseTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JSONParseTests.m; sourceTree = "<group>"; };
 		115426A719EFB4040029A732 /* JSONParse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONParse.h; sourceTree = "<group>"; };
 		115426A819EFB4040029A732 /* JSONParse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONParse.m; sourceTree = "<group>"; };
+		11B6F6AC19F0E523001154EB /* ModelClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModelClass.h; sourceTree = "<group>"; };
+		11B6F6AD19F0E523001154EB /* ModelClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModelClass.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +91,8 @@
 				1154268619EFB38D0029A732 /* AppDelegate.m */,
 				1154268819EFB38D0029A732 /* ViewController.h */,
 				1154268919EFB38E0029A732 /* ViewController.m */,
+				11B6F6AC19F0E523001154EB /* ModelClass.h */,
+				11B6F6AD19F0E523001154EB /* ModelClass.m */,
 				1154268B19EFB38E0029A732 /* Main.storyboard */,
 				1154268E19EFB38E0029A732 /* Images.xcassets */,
 				1154269019EFB38E0029A732 /* LaunchScreen.xib */,
@@ -226,6 +231,7 @@
 			files = (
 				1154268A19EFB38E0029A732 /* ViewController.m in Sources */,
 				1154268719EFB38D0029A732 /* AppDelegate.m in Sources */,
+				11B6F6AE19F0E523001154EB /* ModelClass.m in Sources */,
 				1154268419EFB38C0029A732 /* main.m in Sources */,
 				115426A919EFB4040029A732 /* JSONParse.m in Sources */,
 			);
@@ -418,6 +424,7 @@
 				115426A319EFB38F0029A732 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		115426A419EFB38F0029A732 /* Build configuration list for PBXNativeTarget "JSONParseTests" */ = {
 			isa = XCConfigurationList;
@@ -426,6 +433,7 @@
 				115426A619EFB38F0029A732 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

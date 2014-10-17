@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 #import "JSONParse.h"
+#import "ModelClass.h"
 @interface JSONParseTests : XCTestCase
 
 @end
@@ -38,23 +39,44 @@
 }
 -(void)testJson
 {
-    NSDictionary *dic = @{@"1":@"2",@"2":@"3",@"number":@(1),@"null":[NSNull null]};
+    NSDictionary *dic = @{@"1":@"2",@"2":@"3",@"number":@(1),@"null":[NSNull null],@"emoji":@"🍉👨👩"};
     NSArray *array=@[@"1",@"2",@"3",@(1),[NSNull null]];
-   id json= [JSONParse ObjectCovertToJson:dic];
+   id json= [JSONParse ObjectConvertToJson:dic];
     NSLog(@"json:%@",json);
     
-    id object=[JSONParse JsonCovertToObject:json];
+    id object=[JSONParse JsonConvertToObject:json];
     NSLog(@"object:%@",object);
     
-    NSString *dicJsonStr=[NSDictionary dictionaryCoverToString:dic];
+    NSString *dicJsonStr=[NSDictionary dictionaryConvertoString:dic];
     NSLog(@"DictionaryStr:%@",dicJsonStr);
-    NSString *arrayJsonStr=[NSArray arrayCoverToString:array];
+    NSString *arrayJsonStr=[NSArray arrayConvertoString:array];
     NSLog(@"arrayStr:%@",arrayJsonStr);
     
     NSArray *comArray=@[@"1",@"2",@"3", @{@"1":@"2",@"2":@"3"}];
     NSDictionary *comDictionary=@{@"1":@"2",@"2":@"3",@"dic":@[@"1",@"2",@"3"]};
     
-    NSLog(@"ComAarrayJson:%@",[NSArray arrayCoverToString:comArray]);
-    NSLog(@"ComDictionaryJson:%@",[NSDictionary dictionaryCoverToString:comDictionary]);
+    NSLog(@"ComAarrayJson:%@",[NSArray arrayConvertoString:comArray]);
+    NSLog(@"ComDictionaryJson:%@",[NSDictionary dictionaryConvertoString:comDictionary]);
+}
+-(void)testModelJsonString
+{
+    ModelClass *model=[[ModelClass alloc]init];
+    model.modelId=1;
+    model.modelAddressId=1.001;
+    model.modelArray=@[@"1",@"2",@"3",@(1),[NSNull null]];
+    model.modelName=@"model";
+    model.modelNumber=@(12333);
+    model.modelDictionary=@{@"1":@"2",@"2":@"3",@"number":@(1),@"null":[NSNull null],@"emoji":@"🍉👨👩"};
+    
+    ModelClass *model2=[[ModelClass alloc]init];
+    model2.modelId=1;
+    model2.modelAddressId=1.001;
+    model2.modelArray=@[@"1",@"2",@"3",@(1),[NSNull null]];
+    model2.modelName=@"model";
+    model2.modelNumber=@(12333);
+    model2.modelDictionary=@{@"1":@"2",@"2":@"3",@"number":@(1),@"null":[NSNull null],@"emoji":@"🍉👨👩"};
+    
+    model.model=model2;
+    NSLog(@"%@",[ModelClass objectPropertyConvertoString:model]);
 }
 @end
