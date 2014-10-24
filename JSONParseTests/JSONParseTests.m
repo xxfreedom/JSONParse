@@ -40,7 +40,7 @@
 -(void)testJson
 {
     NSDictionary *dic = @{@"1":@"2",@"2":@"3",@"number":@(1),@"null":[NSNull null],@"emoji":@"🍉👨👩"};
-    NSArray *array=@[@"1",@"2",@"3",@(1),[NSNull null]];
+    NSArray *array=@[@"1",@"2",@"3",@(1),[NSNull null],];
    id json= [JSONParse ObjectConvertToJson:dic];
     NSLog(@"json:%@",json);
     
@@ -78,5 +78,10 @@
     
     model.model=model2;
     NSLog(@"%@",[ModelClass objectPropertyConvertoString:model]);
+}
+-(void)testPorperty
+{
+    ModelClass *model=[[ModelClass alloc]init];
+    NSLog(@"%@",[NSObject getProperty:model WithType:YES]);
 }
 @end

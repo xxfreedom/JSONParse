@@ -78,6 +78,55 @@
     }
     return jsonString;
 }
++(void)classObjectSetPorpertyFromDictionary:(NSDictionary *)dictionary
+                                ClassObject:(id)classObject
+                        AndPorpertyMapTable:(NSDictionary *)mapTable
+                        AndSubClassMapTable:(NSDictionary *)SubClassMapTable
+{
+    if(dictionary&&classObject&&mapTable)
+    {
+        NSArray *allMapPorperty=[mapTable allKeys];
+        [allMapPorperty enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            NSString *realPorperty=mapTable[obj];
+            if(![realPorperty isEqual:[NSNull null]]&&![obj isEqual:[NSNull null]])
+            {
+                id value=[dictionary valueForKey:obj];
+                if([value isEqual:[NSNull null]])
+                {
+                    value=nil;
+                
+                }else if([NSObject isBaseType:value])
+                {
+                    NSString *stringType =[NSObject getPorpertyTypeFromPorpertyName:realPorperty class:[classObject class]];
+                    if ([stringType hasPrefix:@"@"]) {
+                        // handle class case
+                        NSLog(@"handle class case");
+                    } else
+                    {
+                        
+                    }
+                }else if([value isKindOfClass:[NSDictionary class]])
+                {
+                    id subClass =SubClassMapTable[obj];
+                    id aValue;
+                    if([subClass isKindOfClass:[NSString class]])
+                    {
+                        aValue=[[NSClassFromString(subClass) alloc]init];
+                        [NSDictionary classObjectSetPorpertyFromDictionary:value ClassObject:aValue AndPorpertyMapTable:<#(NSDictionary *)#> AndSubClassMapTable:<#(NSDictionary *)#>]
+                    }else
+                    {
+                        
+                    }
+                    
+                }else if([value isKindOfClass:[NSArray class]])
+                {
+                    
+                }
+                [classObject setPorpertyValueForName:value PorpertyName:realPorperty];
+            }
+        }];
+    }
+}
 @end
 @implementation NSArray (JSONString)
 +(NSString *)arrayConvertoString:(NSArray *)array
@@ -121,15 +170,29 @@
 }
 @end
 @implementation NSObject (ClassJsonString)
-
 +(NSString *)objectPropertyConvertoString:(id)object
 {
     NSMutableString *jsonString;
-    NSDictionary *dic=[ NSObject getProperty:object];
+    NSDictionary *dic=[ NSObject getProperty:object WithType:NO];
     jsonString =[[NSMutableString alloc]initWithString:[NSDictionary dictionaryConvertoString:dic]];
     return jsonString;
 }
 +(BOOL)isBaseType:(id)object
+{
+    if([object isKindOfClass:[NSString class]]
+       &&![object isKindOfClass:[NSNumber class]])
+    {
+        return NO;
+    }
+    return YES;
+    
+}
+-(void)setPorpertyValueForName:(id)value PorpertyName:(NSString *)porpertyName
+{
+    Ivar var= class_getInstanceVariable([self class],[porpertyName UTF8String]);
+    object_setIvar(self,var,value);
+}
++(BOOL)isJsonType:(id)object
 {
     if([object isKindOfClass:[NSObject class]]
        &&![object isKindOfClass:[NSString class]]
@@ -139,9 +202,16 @@
         return NO;
     }
     return YES;
-    
 }
-+(NSDictionary *)getProperty:(id)object
++(NSString *)getPorpertyTypeFromPorpertyName:(NSString *)name class:(Class)aclass
+{
+    Ivar var = class_getInstanceVariable(aclass,[name UTF8String]);
+    const char* typeEncoding =ivar_getTypeEncoding(var);
+    NSString *stringType =  [NSString stringWithCString:typeEncoding encoding:NSUTF8StringEncoding];
+    return stringType;
+}
+
++(NSDictionary *)getProperty:(id)object WithType:(BOOL)withType
 {
     NSMutableDictionary *props = [NSMutableDictionary dictionary];
     unsigned int outCount, i;
@@ -156,17 +226,22 @@
         const char* char_f =property_getName(property);
         NSString *propertyName = [NSString stringWithUTF8String:char_f];
         id propertyValue = [object valueForKey:propertyName];
-//获取属性的类型
-//        NSString * dataType = [NSString stringWithCString:ivar_getTypeEncoding(thisValue) encoding:NSUTF8StringEncoding];
+
+        //获取属性的类型
+        if(withType)
+        {
+            NSString * dataType = [NSString stringWithCString:ivar_getTypeEncoding(thisValue) encoding:NSUTF8StringEncoding];
+            propertyName=[NSString stringWithFormat:@"%@:%@",propertyName,dataType];
+        }
         NSString *dicKey=[NSString stringWithFormat:@"%@",propertyName];
         if (propertyValue)
         {
-            if([NSObject isBaseType:propertyValue])
+            if([NSObject isJsonType:propertyValue])
             {
                [props setObject:propertyValue forKey:dicKey];
             }else
             {
-                NSDictionary *property=[NSObject getProperty:propertyValue];
+                NSDictionary *property=[NSObject getProperty:propertyValue WithType:NO];
                 [props setObject:property forKey:dicKey];
             }
             
@@ -174,7 +249,6 @@
         else [props setObject:@"nil" forKey:dicKey];
     }
     free(properties);
-    NSLog(@"propertiees:%@",props);
     return props;
 }
 /* 获取对象的所有方法 */
@@ -194,7 +268,7 @@
               arguments,
               [NSString stringWithUTF8String:encoding]);
     }
+    
     free(mothList_f);
 }
-
 @end

@@ -14,10 +14,19 @@
 @end
 @interface NSDictionary (JSONString)
 +(NSString *)dictionaryConvertoString:(NSDictionary *)dictionary;
++(void)classObjectSetPorpertyFromDictionary:(NSDictionary *)dictionary
+                                ClassObject:(id)classObject
+                        AndPorpertyMapTable:(NSDictionary *)mapTable
+                        AndSubClassMapTable:(NSDictionary *)SubClassMapTable;
 @end
 @interface NSArray (JSONString)
 +(NSString *)arrayConvertoString:(NSArray *)array;
 @end
 @interface NSObject (ClassJsonString)
 +(NSString *)objectPropertyConvertoString:(id)object;
++(BOOL)isBaseType:(id)object;
++(BOOL)isJsonType:(id)object;
++(NSDictionary *)getProperty:(id)object WithType:(BOOL)withType;
++(NSString *)getPorpertyTypeFromPorpertyName:(NSString *)name class:(Class)aclass;
+-(void)setPorpertyValueForName:(id)value PorpertyName:(NSString *)porpertyName;
 @end
