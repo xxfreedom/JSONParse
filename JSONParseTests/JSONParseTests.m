@@ -10,6 +10,7 @@
 #import <XCTest/XCTest.h>
 #import "JSONParse.h"
 #import "ModelClass.h"
+#import "UserInfo.h"
 @interface JSONParseTests : XCTestCase
 
 @end
@@ -84,4 +85,13 @@
     ModelClass *model=[[ModelClass alloc]init];
     NSLog(@"%@",[NSObject getProperty:model WithType:YES]);
 }
+-(void)testUserInfo
+{
+    NSDictionary *userInfoDictionary=@{@"SrealName":@"mike",@"SnickName":@"freedom",@"Sage":[NSNumber numberWithFloat:10.2],@"SID":[NSNumber numberWithInt:101]};
+    UserInfo *userInfo=[[UserInfo alloc]init];
+//    [JSONParse getPorpertyTypeFromPorpertyName:@"_realName" class:[UserInfo class]];
+    [NSDictionary classObjectSetPorpertyFromDictionary:userInfoDictionary ClassObject:userInfo];
+    NSLog(@"%@",[NSObject objectPropertyConvertoString:userInfo]);
+}
+
 @end

@@ -79,10 +79,9 @@
     return jsonString;
 }
 +(void)classObjectSetPorpertyFromDictionary:(NSDictionary *)dictionary
-                                ClassObject:(id)classObject
-                        AndPorpertyMapTable:(NSDictionary *)mapTable
-                        AndSubClassMapTable:(NSDictionary *)SubClassMapTable
+                                ClassObject:(SYModelObject*)classObject
 {
+    NSDictionary *mapTable=[classObject getPropertyMapTable];
     if(dictionary&&classObject&&mapTable)
     {
         NSArray *allMapPorperty=[mapTable allKeys];
@@ -107,20 +106,28 @@
                     }
                 }else if([value isKindOfClass:[NSDictionary class]])
                 {
-                    id subClass =SubClassMapTable[obj];
-                    id aValue;
-                    if([subClass isKindOfClass:[NSString class]])
-                    {
-                        aValue=[[NSClassFromString(subClass) alloc]init];
-                        [NSDictionary classObjectSetPorpertyFromDictionary:value ClassObject:aValue AndPorpertyMapTable:<#(NSDictionary *)#> AndSubClassMapTable:<#(NSDictionary *)#>]
-                    }else
+                    NSString *stringType =[NSObject getPorpertyTypeFromPorpertyName:realPorperty class:[classObject class]];
+                    if([NSClassFromString(stringType) isSubclassOfClass:[NSDictionary class]])
                     {
                         
+                    }else
+                    {
+                        id aValue;
+                        aValue=[[NSClassFromString(stringType) alloc]init];
+                        [NSDictionary classObjectSetPorpertyFromDictionary:value ClassObject:aValue];
                     }
                     
                 }else if([value isKindOfClass:[NSArray class]])
                 {
-                    
+                    NSString *classType=[classObject getArrayPropertyItemClassMapTable][realPorperty];
+                    NSMutableArray *items=[[NSMutableArray alloc]init];
+                    [value enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                        id aValue;
+                        aValue=[[NSClassFromString(classType) alloc]init];
+                        [NSDictionary classObjectSetPorpertyFromDictionary:obj ClassObject:aValue];
+                        [items addObject:aValue];
+                    }];
+                    value=items; 
                 }
                 [classObject setPorpertyValueForName:value PorpertyName:realPorperty];
             }
@@ -189,7 +196,7 @@
 }
 -(void)setPorpertyValueForName:(id)value PorpertyName:(NSString *)porpertyName
 {
-    Ivar var= class_getInstanceVariable([self class],[porpertyName UTF8String]);
+    Ivar var= class_getInstanceVariable([self class],[[NSString stringWithFormat:@"_%@",porpertyName] UTF8String]);
     object_setIvar(self,var,value);
 }
 +(BOOL)isJsonType:(id)object
@@ -205,7 +212,7 @@
 }
 +(NSString *)getPorpertyTypeFromPorpertyName:(NSString *)name class:(Class)aclass
 {
-    Ivar var = class_getInstanceVariable(aclass,[name UTF8String]);
+    Ivar var = class_getInstanceVariable(aclass,[[NSString stringWithFormat:@"_%@",name] UTF8String]);
     const char* typeEncoding =ivar_getTypeEncoding(var);
     NSString *stringType =  [NSString stringWithCString:typeEncoding encoding:NSUTF8StringEncoding];
     return stringType;

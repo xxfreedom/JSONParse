@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "SYModelObject.h"
 @interface JSONParse : NSObject
 +(id)ObjectConvertToJson:(id)object;
 +(id)JsonConvertToObject:(id)json;
@@ -15,9 +15,7 @@
 @interface NSDictionary (JSONString)
 +(NSString *)dictionaryConvertoString:(NSDictionary *)dictionary;
 +(void)classObjectSetPorpertyFromDictionary:(NSDictionary *)dictionary
-                                ClassObject:(id)classObject
-                        AndPorpertyMapTable:(NSDictionary *)mapTable
-                        AndSubClassMapTable:(NSDictionary *)SubClassMapTable;
+                                ClassObject:(SYModelObject*)classObject;
 @end
 @interface NSArray (JSONString)
 +(NSString *)arrayConvertoString:(NSArray *)array;

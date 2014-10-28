@@ -7,7 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-@interface ModelClass : NSObject
+#import "SYModelObject.h"
+@interface ModelClass : SYModelObject
 @property (nonatomic,assign)int modelId;
 @property (nonatomic,assign)float modelAddressId;
 @property (nonatomic,copy)NSString *modelName;
